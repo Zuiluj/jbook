@@ -1,16 +1,21 @@
 import * as esbuild from 'esbuild-wasm';
-import axios from 'axios';
+import localForage from 'localforage';
+
+const fileCache = localForage.createInstance({
+    name: 'filecache',
+});
 
 export const unpkgPathPlugin = () => {
     return {
         name: 'unpkg-path-plugin',
         setup(build: esbuild.PluginBuild) {
-            build.onResolve({ filter: /.*/ }, async (args: any) => {
-                console.log('onResolve', args);
-                if (args.path === 'index.js') {
-                    return { path: args.path, namespace: 'a' };
-                }
+            // Handle root entry file of 'index.js'
+            build.onResolve({ filter: /(^index\.js)/ }, () => {
+                return { path: 'index.js', namespace: 'a' };
+            });
 
+            // Handle relative path a module
+            build.onResolve({ filter: /^\.+\// }, (args: any) => {
                 if (args.path.includes('./') || args.path.includes('../')) {
                     return {
                         namespace: 'a',
@@ -20,31 +25,13 @@ export const unpkgPathPlugin = () => {
                         ).href,
                     };
                 }
+            });
 
+            // Handle main file of a module
+            build.onResolve({ filter: /.*/ }, async (args: any) => {
                 return {
                     namespace: 'a',
                     path: `https://unpkg.com/${args.path}`,
-                };
-            });
-
-            build.onLoad({ filter: /.*/ }, async (args: any) => {
-                console.log('onLoad', args);
-
-                if (args.path === 'index.js') {
-                    return {
-                        loader: 'jsx',
-                        contents: `
-                          const message = require('nested-test-pkg');
-                          console.log(message);
-                        `,
-                    };
-                }
-
-                const { data, request } = await axios.get(args.path);
-                return {
-                    loader: 'jsx',
-                    contents: data,
-                    resolveDir: new URL('./', request.responseURL).pathname,
                 };
             });
         },
