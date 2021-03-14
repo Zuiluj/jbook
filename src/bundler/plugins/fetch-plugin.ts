@@ -17,6 +17,7 @@ export const fetchPlugin = (inputCode: string) => {
                 };
             });
 
+            // Check to see if module is already in IndexedDB
             build.onLoad({ filter: /.*/ }, async (args: any) => {
                 const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(
                     args.path
