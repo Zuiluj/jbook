@@ -1,5 +1,5 @@
 {
-  "name": "jsbook-proto",
+  "name": "jsnote-proto",
   "version": "3.0.0",
   "description": "",
   "publishConfig": {
@@ -17,10 +17,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@jbook-proto/local-client": "^1.0.0"
+    "@jsnote-proto/local-client": "^1.0.0"
   },
   "devDependencies": {
-    "@jsbook-proto/local-api": "^3.0.0",
+    "@jsnote-proto/local-api": "^3.0.0",
     "@types/node": "^14.14.35",
     "commander": "^7.1.0",
     "esbuild": "0.8.26",
