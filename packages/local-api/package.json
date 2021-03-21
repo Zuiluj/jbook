@@ -1,6 +1,6 @@
 {
   "name": "@jsbook-proto/local-api",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "",
   "publishConfig": {
     "access": "public"
@@ -24,7 +24,7 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
-    "@jsbook-proto/local-client": "^2.0.0",
+    "@jsbook-proto/local-client": "^3.0.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.6"
